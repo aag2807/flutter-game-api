@@ -1,0 +1,5 @@
+//RUN APP
+nodemon --exect deno run --allow-net index.ts
+
+//KILL PORT 
+fuser -n tcp -k 8080ts
