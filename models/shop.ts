@@ -24,18 +24,22 @@ class Shop implements IShop {
     });
   }
 
-  public storeGreeting(ctxt: any): void {
-    ctxt.response.body = "Hello there stranger.";
+  public storeGreeting(ctx: any): void {
+    ctx.response.status = 204
+    ctx.response.body = "Hello there stranger.";
   }
 
-  public showAllItems(ctxt: any): void {
+  public showAllItems(ctx: any): void {
     let { storeItems } = shopStore.getState();
-    ctxt.response.body = storeItems;
+    ctx.response.status = 200
+    ctx.response.body = storeItems;
   }
 
   public purchaseItem(ctx: any): void {
+    ctx.response.status = 200
     let id = ctx.params.id;
     let { storeItems } = shopStore.getState();
+
     if (storeItems[id].quantity > 0) {
       shopStore.dispatch({
         type: "BUY",
@@ -54,17 +58,31 @@ class Shop implements IShop {
   }
 
   public getItem(ctx: any): void {
+    ctx.response.status = 200
     let { storeItems } = shopStore.getState();
     let id = ctx.params.id;
     ctx.response.body = storeItems[id];
   }
+  
 
   completePurchase(): string {
     throw new Error("Method not implemented.");
   }
 
-  restock(): void {
-    throw new Error("Method not implemented.");
+  public restock(ctx:any): void {
+    let { storeItems } = shopStore.getState();
+
+    for(let key in storeItems) {
+      storeItems[key].quantity = 5;
+    }
+    
+    shopStore.dispatch({
+      type: "RESTOCK"
+    })
+
+    ctx.response.body = {
+      message: "Store successfully restocked"
+    }
   }
 }
 

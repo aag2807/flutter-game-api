@@ -4,7 +4,7 @@ import { createStore } from "../utils/createStore.ts";
 import { IShopItem } from "../utils/interfaces.d.ts";
 import { action } from "../utils/interfaces.d.ts";
 
-type actionNames = "ADD" | "REMOVE" | "BUY";
+type actionNames = "ADD" | "REMOVE" | "BUY"| "RESTOCK";
 
 type shopStoreType = {
   storeItems: { [key: string]: IShopItem };
@@ -33,9 +33,15 @@ const Reducer = (
         delete state.storeItems[action.payload];
       }
       return state;
-
+   
     case "BUY":
       state.storeItems[action.payload].quantity--
+      return state;
+
+    case "RESTOCK":
+      for(let key in state.storeItems) {
+        state.storeItems[key].quantity = 5;
+      }
       return state;
     default:
       return state;

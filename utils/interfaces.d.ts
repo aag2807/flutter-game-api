@@ -17,5 +17,5 @@ export interface IShopItem {
 
 export type action<T> = {
   type: T;
-  payload: any;
+  payload?: any;
 };

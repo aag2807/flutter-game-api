@@ -10,5 +10,6 @@ ShopRouter
   .get("/shop/items", shopController.showAllItems)
   .get("/shop/items/:id", shopController.getItem)
   .post('/shop/purchase/:id', shopController.purchaseItem)
+  .post('/shop/items/restock', shopController.restock)
 
 export default ShopRouter;
