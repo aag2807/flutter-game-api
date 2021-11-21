@@ -4,7 +4,7 @@ import { createStore } from "../utils/createStore.ts";
 import { IShopItem } from "../utils/interfaces.d.ts";
 import { action } from "../utils/interfaces.d.ts";
 
-type actionNames = "ADD" | "REMOVE" | "BUY"| "RESTOCK";
+type actionNames = "ADD" | "REMOVE" | "BUY" | "RESTOCK";
 
 type shopStoreType = {
   storeItems: { [key: string]: IShopItem };
@@ -14,11 +14,10 @@ const initialShopState: shopStoreType = {
   storeItems: {},
 };
 
-const Reducer = (
+const reducer = (
   state: typeof initialShopState,
   action: action<actionNames>,
 ): typeof state => {
-  
   switch (action.type) {
     case "ADD":
       let itemToAdd = {
@@ -33,13 +32,13 @@ const Reducer = (
         delete state.storeItems[action.payload];
       }
       return state;
-   
+
     case "BUY":
-      state.storeItems[action.payload].quantity--
+      state.storeItems[action.payload].quantity--;
       return state;
 
     case "RESTOCK":
-      for(let key in state.storeItems) {
+      for (let key in state.storeItems) {
         state.storeItems[key].quantity = 5;
       }
       return state;
@@ -48,6 +47,6 @@ const Reducer = (
   }
 };
 
-let shopStore = createStore(Reducer, initialShopState);
+const shopStore = createStore(reducer, initialShopState);
 
 export { shopStore };

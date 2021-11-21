@@ -1,10 +1,25 @@
 // deno-lint-ignore-file
-import { IShop, IShopItem } from "../utils/interfaces.d.ts";
+import { IShop } from "../utils/interfaces.d.ts";
 import { shopStore } from "../state/shopStore.ts";
+import MongoAdapter from "../utils/mongoAdapter.ts";
 
 class Shop implements IShop {
+  private DBAdapter: MongoAdapter = new MongoAdapter();
+
+  /**
+   * calls bootstrap store and creates 3 items that are inserted
+   * for testing purposes
+   * @constructor
+   */
   constructor() {
+    console.log(this.DBAdapter)
     this.bootStrapStore();
+  }
+
+  bootstrapShop(ctx: any): void {
+    ctx.response.body = {
+      message: "Bootstrapped shop mongodatabase ",
+    };
   }
 
   private bootStrapStore(): void {
@@ -25,18 +40,18 @@ class Shop implements IShop {
   }
 
   public storeGreeting(ctx: any): void {
-    ctx.response.status = 204
+    ctx.response.status = 204;
     ctx.response.body = "Hello there stranger.";
   }
 
   public showAllItems(ctx: any): void {
     let { storeItems } = shopStore.getState();
-    ctx.response.status = 200
+    ctx.response.status = 200;
     ctx.response.body = storeItems;
   }
 
   public purchaseItem(ctx: any): void {
-    ctx.response.status = 200
+    ctx.response.status = 200;
     let id = ctx.params.id;
     let { storeItems } = shopStore.getState();
 
@@ -49,40 +64,35 @@ class Shop implements IShop {
         message: "Purchase successful.",
         remainingQuantity: storeItems[id].quantity,
       };
-    }else {
+    } else {
       ctx.response.body = {
-        message:'Unsuccessfull purchase.',
-        motive: 'Store has a quantity of 0 for this item.'
-      }
+        message: "Unsuccessfull purchase.",
+        motive: "Store has a quantity of 0 for this item.",
+      };
     }
   }
 
   public getItem(ctx: any): void {
-    ctx.response.status = 200
+    ctx.response.status = 200;
     let { storeItems } = shopStore.getState();
     let id = ctx.params.id;
     ctx.response.body = storeItems[id];
   }
-  
 
-  completePurchase(): string {
-    throw new Error("Method not implemented.");
-  }
-
-  public restock(ctx:any): void {
+  public restock(ctx: any): void {
     let { storeItems } = shopStore.getState();
 
-    for(let key in storeItems) {
+    for (let key in storeItems) {
       storeItems[key].quantity = 5;
     }
-    
+
     shopStore.dispatch({
-      type: "RESTOCK"
-    })
+      type: "RESTOCK",
+    });
 
     ctx.response.body = {
-      message: "Store successfully restocked"
-    }
+      message: "Store successfully restocked",
+    };
   }
 }
 

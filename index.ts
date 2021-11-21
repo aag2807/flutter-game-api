@@ -5,6 +5,4 @@ const app = new Application();
 
 app.use(ShopRouter.routes());
 
-console.log("running");
-
 await app.listen({ port: 8080 });
