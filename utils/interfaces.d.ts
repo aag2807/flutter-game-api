@@ -12,8 +12,6 @@ export interface IShop {
   getItem(ctx: any): void;
 
   restock(ctx: any): void;
-
-  bootstrapShop(ctx: any): void;
 }
 
 export interface IShopItem {

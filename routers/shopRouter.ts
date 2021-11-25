@@ -7,7 +7,6 @@ const ShopRouter = new Router();
 
 ShopRouter
   .get("/shop", shopController.storeGreeting)
-  .post("/shop/bootstrap", shopController.bootstrapShop)
   .get("/shop/items", shopController.showAllItems)
   .get("/shop/items/:id", shopController.getItem)
   .post("/shop/items/restock", shopController.restock)

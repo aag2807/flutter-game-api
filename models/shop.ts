@@ -3,23 +3,24 @@ import { IShop } from "../utils/interfaces.d.ts";
 import { shopStore } from "../state/shopStore.ts";
 import MongoAdapter from "../utils/mongoAdapter.ts";
 
-class Shop implements IShop {
-  private DBAdapter: MongoAdapter = new MongoAdapter();
+const DBAdapter: MongoAdapter = new MongoAdapter();
 
+class Shop implements IShop {
   /**
    * calls bootstrap store and creates 3 items that are inserted
    * for testing purposes
    * @constructor
    */
   constructor() {
-    console.log(this.DBAdapter)
     this.bootStrapStore();
   }
 
-  bootstrapShop(ctx: any): void {
-    ctx.response.body = {
-      message: "Bootstrapped shop mongodatabase ",
-    };
+  /**
+   * this instantiates the class and
+   * @param ctx
+   */
+  bootstrapDBDriver(): void {
+    console.log(DBAdapter);
   }
 
   private bootStrapStore(): void {
@@ -45,6 +46,7 @@ class Shop implements IShop {
   }
 
   public showAllItems(ctx: any): void {
+    DBAdapter.getAllItems();
     let { storeItems } = shopStore.getState();
     ctx.response.status = 200;
     ctx.response.body = storeItems;
